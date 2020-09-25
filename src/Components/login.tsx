@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
@@ -13,12 +13,16 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { lightTheme } from '../Themes/theme'
-import { ThemeContext } from '../ThemeProvider'
 
 const useStyles = makeStyles((theme) => ({
     avatar: { 
-        backgroundColor: theme.palette.secondary.main,
+      "&:hover": {
+        backgroundColor: theme.palette.action.hover,
+      },
+        backgroundColor: theme.palette.primary.main,
         margin: theme.spacing(1),
+          
+  
     },
     paper: {
         margin: 0,
@@ -63,9 +67,8 @@ function Copyright() {
   );
 }
 
-const Login: React.FC = () => {
+const Login = () => {
   const classes = useStyles();
-  const setThemeName = useContext(ThemeContext)
 
   return (
     <Container component="main" maxWidth="xs">
@@ -78,7 +81,7 @@ const Login: React.FC = () => {
         </Typography>        
         <form className={classes.form} noValidate>
           <TextField
-            color='secondary'
+            color='primary'
             variant="outlined"
             margin="normal"
             required
@@ -90,7 +93,7 @@ const Login: React.FC = () => {
             autoFocus
           />
           <TextField
-            color='secondary'
+            color='primary'
             variant="outlined"
             margin="normal"
             required
@@ -104,10 +107,10 @@ const Login: React.FC = () => {
           <FormControlLabel
             control={<Checkbox value="remember" color="secondary" />}
             label="Recordar constreseña"
-            color='secondary'
+            color='primary'
           />
           <Button
-            color='secondary'
+            color='primary'
             type="submit"
             fullWidth
             variant="contained"
@@ -123,7 +126,7 @@ const Login: React.FC = () => {
             </Grid>
             <Grid item>
               <Link href="#" color='inherit' variant="body2">
-                {"¿No tienes una cuenta? Registrate"}
+                {"Crear cuenta nueva"}
               </Link>
             </Grid>
           </Grid>
