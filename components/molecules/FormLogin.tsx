@@ -66,7 +66,7 @@ export default (props) => {
               </Link>
             </Grid>
             <Grid item>
-              <Link onClick={() => props.Click()} color='inherit' variant="body2">
+              <Link href='signup' color='inherit' variant="body2">
                 {"Crear cuenta nueva"}
               </Link>                
             </Grid>

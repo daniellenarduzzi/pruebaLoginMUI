@@ -19,8 +19,5 @@ export default createMuiTheme ({
         text: {
             primary: '#262626',
         },
-        action: {
-            hover: '#000a12',
-        }
     }
 })

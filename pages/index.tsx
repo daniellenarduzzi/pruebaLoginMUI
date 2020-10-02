@@ -7,7 +7,6 @@ export default () => (
         <title>Arreglos YA!</title>
       </Head>
       <main>
-       
       </main>
     </>
 )

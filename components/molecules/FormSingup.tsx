@@ -1,26 +1,29 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
-import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
+import Link from '@material-ui/core/Link';
+import theme from '@/themes/light'
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+      height: '100vh',
+      display: 'flex',
+    },
     submit: {
         margin: theme.spacing(3, 0, 2),
-      },
-    registerForm: {
-        justifyContent: 'center',
       },
       formContainer: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        height: '100vh'
+        
+        textAlign: 'center'
       },
       flexContainer: {
         display: 'flex',
@@ -28,22 +31,23 @@ const useStyles = makeStyles((theme) => ({
         gap: '10px',
       },
       appBar: {
-        position: 'relative',
+        position: 'fixed',
       },
       title: {
         marginLeft: theme.spacing(2),
         flex: 1,
-      }
+      },
 }))
 
-export default (props) => {
+export default () => {
     const classes = useStyles();
 
     return (
-        <Dialog fullScreen open={props.Op} onClose={() => props.Close()} TransitionComponent={props.Trans}>
+      <div className={classes.container}> 
+        <ThemeProvider theme={theme}>
             <AppBar className={classes.appBar}> 
                 <Toolbar>
-                    <IconButton edge="start" color="inherit" onClick={() => props.Close()} aria-label="close">
+                    <IconButton edge="start" color="inherit" href='login' aria-label="close">
                         <CloseIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
@@ -52,7 +56,7 @@ export default (props) => {
                 </Toolbar>
             </AppBar>
             <Container className={classes.formContainer} maxWidth='xs'>
-            <form className={classes.registerForm}> 
+            <form> 
             <div className={classes.flexContainer}> 
               <TextField
                   color='primary'
@@ -122,9 +126,12 @@ export default (props) => {
               >
                   Registrarse
               </Button>
+              <Link href="login" color='inherit' variant="body2">
+                ¿Ya tienes cuenta? Inicia sesión
+              </Link>
             </form>
-          </Container>  
-        </Dialog>
-        
+          </Container>
+        </ThemeProvider>         
+      </div>       
     )
 }

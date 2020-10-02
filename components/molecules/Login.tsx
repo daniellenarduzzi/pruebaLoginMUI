@@ -6,11 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import lightTheme from '@/themes/light'
 import Copyright from '@/atoms/Copyright'
-import { TransitionProps } from '@material-ui/core/transitions';
-import Slide from '@material-ui/core/Slide';
 import CustomAvatar from '@/atoms/CustomAvatar'
 import FormLogin from '@/molecules/FormLogin'
-import FormSignup from '@/molecules/FormSingup'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -24,20 +21,8 @@ const useStyles = makeStyles((theme) => ({
       },
   }))
  
-const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
 const Login = () => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -48,8 +33,7 @@ const Login = () => {
         <Typography component="h1" variant="h5">
           Inicio de Sesión
         </Typography>        
-        <FormLogin Click={handleClickOpen}/>
-        <FormSignup Op={open} Trans={Transition} Close={handleClose}/>
+        <FormLogin/>
         </ThemeProvider>
         <Box mt={8}>
         <Copyright />
