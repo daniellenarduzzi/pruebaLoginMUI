@@ -1,12 +1,13 @@
 import React from "react";  
 import Head from "next/head";  
-import { ApolloProvider } from "@apollo/react-hooks";  
-import withData from "../utils/apollo";
+import { ApolloProvider } from '@apollo/client'
+import { useApollo } from '@/utils/apollo'
 
-const App = ({ Component, pageProps, apollo }) => {  
+const App = ({ Component, pageProps }) => {  
+  const apolloClient = useApollo(pageProps.initialApolloState)
+  
   return (
-    <ApolloProvider client={apollo}>
-
+    <ApolloProvider client={apolloClient}>
       <Head>
         <title>Arreglos YA!</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -21,5 +22,4 @@ const App = ({ Component, pageProps, apollo }) => {
   )
 };
 
-// Wraps all components in the tree with the data provider
-export default withData(App);
+export default App

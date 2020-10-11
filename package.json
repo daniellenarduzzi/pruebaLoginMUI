@@ -10,7 +10,9 @@
     "storybook": "start-storybook -p 6006 -c .storybook"
   },
   "dependencies": {
+    "@apollo/client": "^3.2.2",
     "@apollo/react-hooks": "^3.1.4",
+    "@hapi/iron": "^6.0.0",
     "@material-ui/core": "^4.9.10",
     "@material-ui/icons": "^4.9.1",
     "apollo-cache-inmemory": "^1.6.5",

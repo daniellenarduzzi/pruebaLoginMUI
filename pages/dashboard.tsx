@@ -1,7 +1,6 @@
 import Head from 'next/head'
-import withPrivateRoute from '@/utils/withPrivateRoute';
 
-const Index = () => (
+const Dashboard = () => (
     <>
       <Head>
         <title>Arreglos YA!</title>
@@ -12,4 +11,4 @@ const Index = () => (
     </>
 )
 
-export default withPrivateRoute(Index)
+export default Dashboard

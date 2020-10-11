@@ -23,6 +23,7 @@
       "@/molecules/*": ["components/molecules/*"],
       "@/constants": ["components/constants"],
       "@/themes/*": ["components/themes/*"],
+      "@/utils/*": ["utils/*"],
     }
   },
   "exclude": [
