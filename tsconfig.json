@@ -21,9 +21,12 @@
     "paths": {
       "@/atoms/*": ["components/atoms/*"],
       "@/molecules/*": ["components/molecules/*"],
-      "@/constants": ["components/constants"],
-      "@/themes/*": ["components/themes/*"],
-      "@/utils/*": ["utils/*"],
+      "@/constants": ["utils/constants"],
+      "@/themes/*": ["utils/themes/*"],
+      "@/apolloUtils/*": ["utils/apollo/*"],
+      "@/authUtils": ["utils/auth"],
+      "@/authUtils/*": ["utils/auth/*"],
+      "@/dbUtils": ["utils/db"],
     }
   },
   "exclude": [
@@ -32,6 +35,6 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx", "atoms/button/index.tsx"
+    "**/*.tsx", ".old/button/index.tsx"
   ]
 }

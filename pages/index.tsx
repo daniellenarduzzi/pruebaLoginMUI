@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import withPrivateRoute from '@/utils/withPrivateRoute';
+import withPrivateRoute from '@/atoms/withPrivateRoute';
 
 const Index = () => (
     <>

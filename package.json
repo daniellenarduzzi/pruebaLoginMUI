@@ -2,12 +2,12 @@
   "name": "with-jest",
   "version": "0.1.0",
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "test": "jest --watch",
     "test:ci": "jest --ci",
-    "storybook": "start-storybook -p 6006 -c .storybook"
+    "storybook": "start-storybook -p 6006 -c .storybook",
+    "dev": "NODE_OPTIONS='--inspect' next dev"
   },
   "dependencies": {
     "@apollo/client": "^3.2.2",
@@ -24,7 +24,16 @@
     "next": "latest",
     "next-with-apollo": "^5.0.0",
     "react": "16.12.0",
-    "react-dom": "16.12.0"
+    "react-dom": "16.12.0",
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
+    "graphql-scalars": "^1.2.7",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.7",
+    "apollo-server-micro": "^2.14.2",
+    "cookie": "^0.4.1",
+    "uuid": "8.1.0"
   },
   "devDependencies": {
     "@storybook/react": "^5.3.18",

@@ -1,14 +1,11 @@
+import { useState } from 'react'
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Container from '@material-ui/core/Container';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
+import {Button, TextField, Container, AppBar, Toolbar, IconButton, Typography, Link} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close'
-import Typography from '@material-ui/core/Typography'
-import Link from '@material-ui/core/Link';
 import theme from '@/themes/light'
+import { useMutation, gql } from '@apollo/client';
+import { useRouter } from 'next/router'
+import { getErrorMessage } from '@/apolloUtils/form'
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -39,9 +36,59 @@ const useStyles = makeStyles((theme) => ({
       },
 }))
 
-export default () => {
-    const classes = useStyles();
+const SIGNUP_MUTATION = gql`
+  mutation signup($email: String!, $password: String!, $phone: String!, $name: String!)	{
+    signup(input: {email: $email, password: $password, phone: $phone, name: $name}){
+      id
+    }
+  }
+`
 
+const Register = () => {
+    interface signupPayload {
+      email: string
+      password: string
+      name: string
+      phone: string
+    }
+    interface signupResponse {
+      signup: {
+        user : {
+        id: string
+      }}
+    }
+
+    const [signup, {error, loading, data}] = useMutation<signupResponse, signupPayload>(SIGNUP_MUTATION)
+  
+    const [errorMsg, setErrorMsg] = useState<false | string>(false)
+    
+    const router = useRouter()
+  
+    const handleSignup = async event => {
+      event.preventDefault()
+      const form = event.target
+      const formData = new window.FormData(form)
+      const email = formData.get('email') 
+      const password = formData.get('password')
+      const firstName = formData.get('firstName')
+      const lastName = formData.get('lastName')
+      const phone = formData.get('phone')
+      form.reset()
+      if(typeof email === 'string' && typeof password === 'string') {
+        try {
+          const {data} = await signup({ variables: {email, password, name: `${firstName} ${lastName}`, phone}})
+          debugger
+          if (data && data.signup.id){
+            router.push('/')
+          }
+        } catch (error) {
+          setErrorMsg(getErrorMessage(error))
+        }
+      }
+    }
+
+    const classes = useStyles();
+    
     return (
       <div className={classes.container}> 
         <ThemeProvider theme={theme}>
@@ -56,7 +103,9 @@ export default () => {
                 </Toolbar>
             </AppBar>
             <Container className={classes.formContainer} maxWidth='xs'>
-            <form> 
+            <form
+              onSubmitCapture={handleSignup}
+            >
             <div className={classes.flexContainer}> 
               <TextField
                   color='primary'
@@ -64,9 +113,9 @@ export default () => {
                   margin="normal"
                   required
                   fullWidth
-                  id="name"
+                  id="firstName"
                   label="Nombre"
-                  name="name"
+                  name="firstName"
                   autoFocus>
               </TextField>
               <TextField
@@ -75,9 +124,9 @@ export default () => {
                   margin="normal"
                   required
                   fullWidth
-                  id="LastName"
+                  id="lastName"
                   label="Apellido"
-                  name="LastName"
+                  name="lastName"
                   autoFocus>                
               </TextField>  
               </div>
@@ -87,10 +136,10 @@ export default () => {
                   margin="normal"
                   required
                   fullWidth
-                  type='number'
-                  id="telephone"
+                  type='phone'
+                  id="phone"
                   label="Número de teléfono"
-                  name="telephone"
+                  name="phone"
                   autoFocus>
               </TextField>
               <TextField
@@ -99,6 +148,7 @@ export default () => {
                   margin="normal"
                   required
                   fullWidth
+                  type='email'
                   id="email"
                   label="Dirección de Email"
                   name="email"
@@ -126,6 +176,7 @@ export default () => {
               >
                   Registrarse
               </Button>
+              {errorMsg && <p>{errorMsg}</p>}
               <Link href="login" color='inherit' variant="body2">
                 ¿Ya tienes cuenta? Inicia sesión
               </Link>
@@ -135,3 +186,5 @@ export default () => {
       </div>       
     )
 }
+
+export default Register

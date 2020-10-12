@@ -1,7 +1,7 @@
 import React from "react";  
 import Head from "next/head";  
 import { ApolloProvider } from '@apollo/client'
-import { useApollo } from '@/utils/apollo'
+import { useApollo } from '@/apolloUtils/client'
 
 const App = ({ Component, pageProps }) => {  
   const apolloClient = useApollo(pageProps.initialApolloState)
@@ -17,7 +17,6 @@ const App = ({ Component, pageProps }) => {
         />
       </Head>
       <Component {...pageProps} />
-
     </ApolloProvider>
   )
 };

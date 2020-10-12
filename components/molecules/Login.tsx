@@ -1,23 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
+import {CssBaseline, Box, Typography, Container, TextField, FormControlLabel, Checkbox, Link, Grid, Button} from '@material-ui/core';
 import lightTheme from '@/themes/light'
 import Copyright from '@/atoms/Copyright'
 import CustomAvatar from '@/atoms/CustomAvatar'
-import FormLogin from '@/molecules/FormLogin'
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import FormSignup from '@/molecules/FormSingup'
 import { useMutation, gql } from '@apollo/client';
 import { useRouter } from 'next/router'
-
+import { getErrorMessage } from '@/apolloUtils/form'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -38,11 +27,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-
-const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-  
 const LOGIN_MUTATION = gql`
   mutation login($email: String!, $password: String!)	{
     login(input: {email: $email, password: $password}){
@@ -64,16 +48,9 @@ const Login = () => {
   }
   const [login, {error, loading, data}] = useMutation<loginResponse, loginPayload>(LOGIN_MUTATION)
   
-  const [open, setOpen] = React.useState(false);
+  const [errorMsg, setErrorMsg] = useState<false | string>(false)
   
   const router = useRouter()
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleLogin = async event => {
     event.preventDefault()
@@ -87,12 +64,10 @@ const Login = () => {
         const {data} = await login({ variables: {email, password}})
         debugger
         if (data && data.login.token){
-          localStorage.setItem('token', data.login.token)
           router.push('/')
         }
       } catch (error) {
-        debugger
-        console.log(error);
+        setErrorMsg(getErrorMessage(error))
       }
     }
   }
@@ -151,6 +126,7 @@ const Login = () => {
           >
             Inicia Sesión
           </Button>
+          {errorMsg && <p>{errorMsg}</p>}
           <Grid container>
             <Grid item xs>
               <Link href="#" color='inherit' variant="body2">
@@ -158,13 +134,12 @@ const Login = () => {
               </Link>
             </Grid>
             <Grid item>
-              <Link onClick={() => props.Click()} color='inherit' variant="body2">
-                {"Crear cuenta nueva"}
+              <Link onClick={() => router.push('/signup')} color='inherit' variant="body2">
+                Crear cuenta nueva
               </Link>                
             </Grid>
           </Grid>
         </form>
-        <FormSignup Op={open} Trans={Transition} Close={handleClose}/>
         </ThemeProvider>
         <Box mt={8}>
         <Copyright />

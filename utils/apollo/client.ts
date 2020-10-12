@@ -1,15 +1,26 @@
 import { useMemo } from 'react'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
-const { HttpLink } = require('@apollo/client/link/http')
+
 let apolloClient
+
+function createIsomorphLink() {
+  if (typeof window === 'undefined') {
+    const { SchemaLink } = require('@apollo/client/link/schema')
+    const { schema } = require('./schema')
+    return new SchemaLink({ schema })
+  } else {
+    const { HttpLink } = require('@apollo/client/link/http')
+    return new HttpLink({
+      uri: '/api/graphql',
+      credentials: 'same-origin',
+    })
+  }
+}
 
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: new HttpLink({
-        uri: process.env.NEXT_PUBLIC_BACKEND, // Server URL (must be absolute)
-        credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
-    }),
+    link: createIsomorphLink(),
     cache: new InMemoryCache(),
   })
 }

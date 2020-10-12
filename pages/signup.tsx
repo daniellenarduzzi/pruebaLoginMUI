@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import Signup from '@/molecules/FormSingup'
+import Signup from '@/molecules/Signup'
 
-export default () => ( 
+const SignupPage = () => ( 
   <>
       <Head>
         <title>Signup - Arreglos YA!</title>
@@ -11,3 +11,5 @@ export default () => (
       </main>
   </>
 )
+
+export default SignupPage
