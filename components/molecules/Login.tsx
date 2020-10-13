@@ -62,7 +62,6 @@ const Login = () => {
     if(typeof email === 'string' && typeof password === 'string') {
       try {
         const {data} = await login({ variables: {email, password}})
-        debugger
         if (data && data.login.token){
           router.push('/')
         }

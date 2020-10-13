@@ -1,6 +1,6 @@
-import React from 'react';
+import { useEffect } from 'react';
 import Router from 'next/router';
-import { useLazyQuery, gql } from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 import { getLoginSession } from '@/authUtils/index'
 const login = '/login?redirected=true'; // Define your login route address.
 /**
@@ -10,37 +10,34 @@ const login = '/login?redirected=true'; // Define your login route address.
  */
 const checkUserAuthentication = async (req) => {
   const { id } = await getLoginSession(req)
-  if(id)
+  if (id)
     return { auth: true }
   return { auth: null };
 };
 
+const VIEWER_QUERY = gql`
+  query ViewerQuery {
+    viewer {
+      id
+      email
+    }
+  }
+`
+
 const WrappedComponent = (props): any => {
-  const hocComponent = ({ ...props }) => <WrappedComponent {...props} />;
-
-  hocComponent.getInitialProps = async ({req, res }) => {
-    const userAuth = await checkUserAuthentication(req);
-
-    if (!userAuth?.auth) {
-      // Handle server-side and client-side rendering.
-      if (res) {
-        res?.writeHead(302, {
-          Location: login,
-        });
-        res?.end();
-      } else {
+  const hocComponent = ({ ...props }) => {
+    const { data, loading, error } = useQuery(VIEWER_QUERY)
+    const viewer = data?.viewer
+    const shouldRedirect = !(loading || viewer)
+    useEffect(() => {
+      if (shouldRedirect) {
         Router.replace(login);
       }
-    } else if (WrappedComponent.getInitialProps) {
-      const wrappedProps = await WrappedComponent.getInitialProps(userAuth);
-      return { ...wrappedProps, userAuth };
-    }
-
-    return { userAuth };
-  };
+    }, [shouldRedirect])
+    return <WrappedComponent {...props} />;
+  }
 
   return hocComponent;
 };
 
 export default WrappedComponent
-
