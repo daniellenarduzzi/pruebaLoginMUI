@@ -15,12 +15,12 @@ export const userResolver = {
             } catch (error) {
                 throw error('server error');
             }   
-            if (session) {
+            if (!session.id) {
                 throw new AuthenticationError(
                     'Authentication token is invalid, please log in'
                 )
             }
-            return session.token
+            return session
         },
     },
     Mutation: {

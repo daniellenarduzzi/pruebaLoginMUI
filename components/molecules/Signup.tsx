@@ -77,7 +77,6 @@ const Register = () => {
       if(typeof email === 'string' && typeof password === 'string') {
         try {
           const {data} = await signup({ variables: {email, password, name: `${firstName} ${lastName}`, phone}})
-          debugger
           if (data && data.signup.id){
             router.push('/')
           }
