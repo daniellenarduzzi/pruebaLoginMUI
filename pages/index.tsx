@@ -1,15 +1,15 @@
 import Head from 'next/head'
 import withPrivateRoute from '@/atoms/withPrivateRoute';
 
-const Index = () => (
+const WrappedComponent = () => (
     <>
       <Head>
         <title>Arreglos YA!</title>
       </Head>
       <main>
-        atroden
+        index
       </main>
     </>
 )
 
-export default withPrivateRoute(Index)
+export default withPrivateRoute({WrappedComponent})

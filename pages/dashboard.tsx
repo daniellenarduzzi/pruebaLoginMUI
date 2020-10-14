@@ -1,14 +1,14 @@
 import Head from 'next/head'
+import withPrivateRoute from '@/atoms/withPrivateRoute';
 
 const Dashboard = () => (
     <>
       <Head>
-        <title>Arreglos YA!</title>
+        <title>Mi cuenta  - Arreglos YA!</title>
       </Head>
       <main>
-        atroden
       </main>
     </>
 )
 
-export default Dashboard
+export default withPrivateRoute({WrappedComponent: Dashboard})

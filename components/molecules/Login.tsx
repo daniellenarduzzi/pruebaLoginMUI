@@ -63,7 +63,7 @@ const Login = () => {
       try {
         const {data} = await login({ variables: {email, password}})
         if (data && data.login.token){
-          router.push('/')
+          router.push('/dashboard')
         }
       } catch (error) {
         setErrorMsg(getErrorMessage(error))

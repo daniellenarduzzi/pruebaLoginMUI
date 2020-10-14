@@ -1,19 +1,8 @@
 import { useEffect } from 'react';
 import Router from 'next/router';
 import { useQuery, gql } from '@apollo/client';
-import { getLoginSession } from '@/authUtils/index'
-const login = '/login?redirected=true'; // Define your login route address.
-/**
- * Check user authentication and authorization
- * It depends on you and your auth service provider.
- * @returns {{auth: null}}
- */
-const checkUserAuthentication = async (req) => {
-  const { id } = await getLoginSession(req)
-  if (id)
-    return { auth: true }
-  return { auth: null };
-};
+
+const login = '/login?redirected=true';
 
 const VIEWER_QUERY = gql`
   query ViewerQuery {
@@ -22,22 +11,26 @@ const VIEWER_QUERY = gql`
       email
     }
   }
-`
+`;
+interface WithPrivateRouteProps {
+  // eslint-disable-next-line no-undef
+  WrappedComponent: () => JSX.Element
+}
 
-const WrappedComponent = (props): any => {
-  const hocComponent = ({ ...props }) => {
-    const { data, loading, error } = useQuery(VIEWER_QUERY)
-    const viewer = data?.viewer
-    const shouldRedirect = !(loading || viewer)
+const WithPrivateRoute = ({ WrappedComponent }: WithPrivateRouteProps) => {
+  const HocComponent = ({ ...props }) => {
+    const { data, loading } = useQuery(VIEWER_QUERY);
+    const viewer = data?.viewer;
+    const shouldRedirect = !(loading || viewer);
     useEffect(() => {
       if (shouldRedirect) {
         Router.replace(login);
       }
-    }, [shouldRedirect])
+    }, [shouldRedirect]);
     return <WrappedComponent {...props} />;
-  }
+  };
 
-  return hocComponent;
+  return HocComponent;
 };
 
-export default WrappedComponent
+export default WithPrivateRoute;
